@@ -485,22 +485,22 @@ func newUser(s ssh.Session) *User {
 		}
 	}
 
-	if !Config.Private { // sensitive info might be shared on a private server
-		var lastStamp time.Time
-		for i := range Backlog {
-			if Backlog[i].text == "" { // skip empty entries
-				continue
-			}
-			if i == 0 || Backlog[i].timestamp.Sub(lastStamp) > time.Minute {
-				lastStamp = Backlog[i].timestamp
-				u.rWriteln(fmtTime(u, lastStamp))
-			}
-			u.writeln(Backlog[i].senderName, Backlog[i].text)
+	//	if !Config.Private { // sensitive info might be shared on a private server
+	var lastStamp time.Time
+	for i := range Backlog {
+		if Backlog[i].text == "" { // skip empty entries
+			continue
 		}
-		if time.Since(lastStamp) > time.Minute && u.Timezone.Location != nil {
-			u.rWriteln(fmtTime(u, time.Now()))
+		if i == 0 || Backlog[i].timestamp.Sub(lastStamp) > time.Minute {
+			lastStamp = Backlog[i].timestamp
+			u.rWriteln(fmtTime(u, lastStamp))
 		}
+		u.writeln(Backlog[i].senderName, Backlog[i].text)
 	}
+	if time.Since(lastStamp) > time.Minute && u.Timezone.Location != nil {
+		u.rWriteln(fmtTime(u, time.Now()))
+	}
+	//	}
 
 	MainRoom.usersMutex.Lock()
 	MainRoom.users = append(MainRoom.users, u)

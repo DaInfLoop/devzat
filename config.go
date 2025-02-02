@@ -55,6 +55,8 @@ type SlackInfo struct {
 	ChannelID string `yaml:"channel_id"`
 	// Prefix is the prefix to prepend to messages from Slack when rendered for SSH users
 	Prefix string `yaml:"prefix"`
+	// Socket mode token
+	SocketModeToken string `yaml:"socket_mode_token"`
 }
 
 type DiscordInfo struct {
